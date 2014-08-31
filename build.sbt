@@ -1,4 +1,4 @@
-name := """play-scala"""
+name := """dexlink"""
 
 version := "1.0-SNAPSHOT"
 
