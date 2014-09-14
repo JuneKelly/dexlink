@@ -9,4 +9,7 @@ object Application extends Controller {
     Ok(views.html.index("Welcome to dexlink!"))
   }
 
+  def aboutPage = Action {
+    Ok(views.html.about())
+  }
 }
