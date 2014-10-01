@@ -13,6 +13,6 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   ws,
-  "org.mongodb" %% "casbah" % "2.7.3",
+  "org.mongodb" %% "casbah" % "2.7.2",
   "com.github.nscala-time" %% "nscala-time" % "1.4.0"
 )
