@@ -43,30 +43,34 @@ trait UserAccountStorage {
       val coll = DB.collection("user_account")
       val doc = coll.findOneByID(id)
       doc match {
-        case Some(user) =>
-          println(user.getClass)
-          val userId = user.as[String]("_id")
-          val userPass = user.as[String]("pass")
-          // val userCreated = user.as[Option[java.util.Date]]("created")
-          // val userUpdated = user.as[Option[java.util.Date]]("updated")
-          val userCreated = user.as[Option[LocalDateTime]]("created")
-          val userUpdated = user.as[Option[LocalDateTime]]("updated")
-
-          if (userCreated.isEmpty || userUpdated.isEmpty) {
-            return None
-          }
-
-          Some(
-            UserAccount(
-              id = userId,
-              pass = userPass,
-              created = userCreated.get.toDateTime,
-              updated = userUpdated.get.toDateTime
-            )
-          )
+        case Some(user) => Some(documentToUserAccount(user))
         case None => None
       }
     }
 
   }
+
+  def documentToUserAccount(doc: MongoDBObject): UserAccount = {
+    val userId = doc.as[String]("_id")
+    val userPass = doc.as[String]("pass")
+    val userCreated = doc.as[Option[LocalDateTime]]("created")
+    val userUpdated = doc.as[Option[LocalDateTime]]("updated")
+
+    if (userCreated.isEmpty || userUpdated.isEmpty) {
+      throw new InvalidUserAccountException(
+        s"UserAccount $userId invalid"
+      )
+    }
+
+    UserAccount(
+      id = userId,
+      pass = userPass,
+      created = userCreated.get.toDateTime,
+      updated = userUpdated.get.toDateTime
+    )
+  }
+
+  class InvalidUserAccountException(msg: String)
+      extends RuntimeException(msg)
+
 }
