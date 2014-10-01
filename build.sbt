@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   ws,
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.akka23-SNAPSHOT"
+  "org.mongodb" %% "casbah" % "2.7.3",
+  "com.github.nscala-time" %% "nscala-time" % "1.4.0"
 )
