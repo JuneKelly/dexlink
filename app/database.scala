@@ -7,7 +7,7 @@ import org.joda.time.LocalDateTime
 import com.mongodb.casbah.commons.conversions.scala._
 import models.user.UserAccount
 
-
+// SMELL: surely there is a better way of handling all this
 trait Persistence {
   RegisterConversionHelpers()
   RegisterJodaLocalDateTimeConversionHelpers()
