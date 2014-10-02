@@ -5,11 +5,11 @@ import java.util.UUID
 import com.mongodb.casbah.Imports._
 import org.joda.time.LocalDateTime
 import com.mongodb.casbah.commons.conversions.scala._
-
 import models.user.UserAccount
 
 
 trait Persistence {
+  RegisterConversionHelpers()
   RegisterJodaLocalDateTimeConversionHelpers()
 
   var client: MongoClient = null
@@ -31,9 +31,15 @@ object DB extends Persistence {
     database()(collectionName)
   }
 
+  def userAccountCollection(): MongoCollection = {
+    collection("user_account")
+  }
+
 }
 
 
+/** Storage backend for UserAccount objects
+  */
 trait UserAccountStorage {
 
   val backend = UserAccountStorageBackend
@@ -41,22 +47,36 @@ trait UserAccountStorage {
   object UserAccountStorageBackend {
 
     def get(id: String): Option[UserAccount] = {
-      val coll = DB.collection("user_account")
-      val doc = coll.findOneByID(id)
+      val doc = DB.userAccountCollection.findOneByID(id)
       doc match {
         case Some(user) => Some(documentToUserAccount(user))
         case None => None
       }
     }
 
+    def exists(id: String): Boolean = {
+      !DB.userAccountCollection.findOneByID(id).isEmpty
+    }
+
+    def save(user: UserAccount): Boolean = {
+      val doc = userAccountToDocument(user)
+      val result = DB.userAccountCollection.save(doc)
+
+      return result.getN == 1
+    }
+
   }
 
+  /** Convert MongoDB Document to a UserAccount,
+    * Raises an exception if the document is invalid
+    */
   def documentToUserAccount(doc: MongoDBObject): UserAccount = {
     val userId = doc.as[String]("_id")
     val userPass = doc.as[String]("pass")
     val userCreated = doc.as[Option[LocalDateTime]]("created")
     val userUpdated = doc.as[Option[LocalDateTime]]("updated")
 
+    // SMELL
     if (userCreated.isEmpty || userUpdated.isEmpty) {
       throw new InvalidUserAccountException(
         s"UserAccount $userId invalid"
@@ -68,6 +88,17 @@ trait UserAccountStorage {
       pass = userPass,
       created = userCreated.get.toDateTime,
       updated = userUpdated.get.toDateTime
+    )
+  }
+
+  /** Convert UserAccount model to MongoDB document
+    */
+  def userAccountToDocument(user: UserAccount): MongoDBObject = {
+    MongoDBObject(
+      "_id" -> user.id,
+      "pass" -> user.pass,
+      "created" -> user.created,
+      "updated" -> user.updated
     )
   }
 

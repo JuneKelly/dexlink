@@ -8,8 +8,8 @@ import models.user._
 object Application extends Controller {
 
   def index = Action {
-    // val user = UserAccountService.get("shanek")
-    val user = None
+    val user = UserAccountService.get("shanek")
+    // val user = None
     Ok(views.html.index("Welcome to dexlink!", user))
   }
 
