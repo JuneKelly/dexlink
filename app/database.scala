@@ -14,6 +14,7 @@ trait Persistence {
 
   var client: MongoClient = null
 
+  // Initialise the database client
   def init(uri: String) {
     client = MongoClient(MongoClientURI(uri))
   }

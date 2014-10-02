@@ -2,11 +2,15 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import services.user._
+import models.user._
 
 object Application extends Controller {
 
   def index = Action {
-    Ok(views.html.index("Welcome to dexlink!"))
+    // val user = UserAccountService.get("shanek")
+    val user = None
+    Ok(views.html.index("Welcome to dexlink!", user))
   }
 
   def aboutPage = Action {
