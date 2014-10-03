@@ -6,18 +6,20 @@ import com.mongodb.casbah.Imports._
 import org.joda.time.LocalDateTime
 import com.mongodb.casbah.commons.conversions.scala._
 import models.user.UserAccount
+import play.api.Play
+
 
 // SMELL: surely there is a better way of handling all this
 trait Persistence {
   RegisterConversionHelpers()
   RegisterJodaLocalDateTimeConversionHelpers()
 
-  var client: MongoClient = null
+  val client: MongoClient = MongoClient(
+    MongoClientURI(
+      Play.current.configuration.getString("mongodb.uri").getOrElse("")
+    )
+  )
 
-  // Initialise the database client
-  def init(uri: String) {
-    client = MongoClient(MongoClientURI(uri))
-  }
 }
 
 
