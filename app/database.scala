@@ -36,7 +36,6 @@ object DB extends Persistence {
   def userAccountCollection(): MongoCollection = {
     collection("user_account")
   }
-
 }
 
 
@@ -60,13 +59,15 @@ trait UserAccountStorage {
       !DB.userAccountCollection.findOneByID(id).isEmpty
     }
 
-    def save(user: UserAccount): Boolean = {
-      val doc = userAccountToDocument(user)
-      val result = DB.userAccountCollection.save(doc)
-
-      return result.getN == 1
+    def insert(user: UserAccount): Boolean = {
+      if (exists(user.id)) {
+        false
+      } else {
+        val doc = userAccountToDocument(user)
+        val result = DB.userAccountCollection.insert(doc)
+        return result.getN == 1
+      }
     }
-
   }
 
   /** Convert MongoDB Document to a UserAccount,

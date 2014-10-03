@@ -15,4 +15,8 @@ object Application extends Controller {
   def aboutPage = Action {
     Ok(views.html.about())
   }
+
+  def register = Action {
+    Ok(views.html.register(None))
+  }
 }
