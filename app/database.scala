@@ -9,16 +9,22 @@ import models.user.UserAccount
 import play.api.Play
 
 
-// SMELL: surely there is a better way of handling all this
 trait Persistence {
   RegisterConversionHelpers()
   RegisterJodaLocalDateTimeConversionHelpers()
 
-  val client: MongoClient = MongoClient(
-    MongoClientURI(
-      Play.current.configuration.getString("mongodb.uri").getOrElse("")
-    )
-  )
+  private var clientConnection: Option[MongoClient] = None
+
+  def client(): MongoClient = {
+    clientConnection match {
+      case Some(connection) => connection
+      case None =>
+        val uri = Play.current.configuration.getString("mongodb.uri").getOrElse("")
+        val connection = MongoClient(MongoClientURI(uri))
+        clientConnection = Some(connection)
+        return connection
+    }
+  }
 
 }
 
@@ -26,7 +32,7 @@ trait Persistence {
 object DB extends Persistence {
 
   def database(): MongoDB = {
-    client("dexlink")
+    client()("dexlink")
   }
 
   def collection(collectionName: String): MongoCollection = {
