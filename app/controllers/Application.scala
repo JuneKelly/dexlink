@@ -2,6 +2,8 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
 import services.user._
 import models.user._
 
@@ -19,3 +21,9 @@ object Application extends Controller {
     Ok(views.html.register(None))
   }
 }
+
+case class RegistrationData(
+  userid: String,
+  passwordOne: String,
+  passwordTwo: String
+)
