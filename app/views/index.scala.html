@@ -1,4 +1,4 @@
-@(message: String, maybeUser: Option[models.user.UserAccount])
+@(message: String)
 
 @main("Welcome to dexlink") {
 
@@ -8,17 +8,6 @@
       <p>This doesn't do much right now.</p>
       <p><a href="#" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
     </div>
-  </div>
-
-  <div class="row">
-    @maybeUser match {
-      case Some(user) => {
-        <p>User: @user.id</p>
-      }
-      case None => {
-        <p></p>
-      }
-    }
   </div>
 
 }

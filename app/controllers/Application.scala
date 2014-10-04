@@ -8,8 +8,7 @@ import models.user._
 object Application extends Controller {
 
   def index = Action {
-    val user = UserAccountService.get("shanek")
-    Ok(views.html.index("Welcome to dexlink!", user))
+    Ok(views.html.index("Welcome to dexlink!"))
   }
 
   def aboutPage = Action {
