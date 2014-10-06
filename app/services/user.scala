@@ -22,7 +22,7 @@ object UserAccountService extends UserAccountStorage {
     if (exists(id)) {
       return None
     }
-    val user = UserAccount(id = id, pass = pass.bcrypt)
+    val user = UserAccount(id=id, pass=pass.bcrypt)
     val result = backend.insert(user)
     if (result == true) {
       Some(user)

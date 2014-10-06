@@ -20,6 +20,11 @@ object Application extends Controller {
   def register = Action {
     Ok(views.html.register(None))
   }
+
+  def registerPost = Action { request =>
+    Logger.info("registration form submitted")
+    Ok(views.html.register(None))
+  }
 }
 
 case class RegistrationData(

@@ -19,7 +19,9 @@ trait Persistence {
     clientConnection match {
       case Some(connection) => connection
       case None =>
-        val uri = Play.current.configuration.getString("mongodb.uri").getOrElse("")
+        val uri = Play.current.
+          configuration.getString("mongodb.uri").
+          getOrElse("")
         val connection = MongoClient(MongoClientURI(uri))
         clientConnection = Some(connection)
         return connection
