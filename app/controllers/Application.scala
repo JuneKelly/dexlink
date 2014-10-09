@@ -17,18 +17,35 @@ object Application extends Controller {
     Ok(views.html.about())
   }
 
+  val registrationForm = Form(
+    mapping(
+      "email" -> nonEmptyText(minLength = 2, maxLength = 64),
+      "password1" -> nonEmptyText(minLength = 8),
+      "password2" -> nonEmptyText(minLength = 8)
+    )(RegistrationData.apply)(RegistrationData.unapply)
+  )
+
   def register = Action {
-    Ok(views.html.register(None))
+    Ok(views.html.register(registrationForm))
   }
 
-  def registerPost = Action { request =>
+  def registerPost = Action { implicit request =>
     Logger.info("registration form submitted")
-    Ok(views.html.register(None))
+
+    registrationForm.bindFromRequest.fold(
+      formWithErrors => {
+        Logger.info("Registration Errors")
+        Ok(views.html.register(formWithErrors))
+      },
+      registrationData => {
+        Redirect("/")
+      }
+    )
   }
 }
 
 case class RegistrationData(
-  userid: String,
-  passwordOne: String,
-  passwordTwo: String
+  email: String,
+  password1: String,
+  password2: String
 )

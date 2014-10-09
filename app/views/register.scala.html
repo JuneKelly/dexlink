@@ -1,12 +1,19 @@
-@(errorMessage: Option[String])
+@(registrationForm: Form[RegistrationData])
 
 @main("Register") {
   <div class="row">
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-8 col-md-offset-2">
       <div>
         <h1>Register</h1>
         <hr />
       </div>
+
+      @if(!registrationForm.errors.isEmpty) {
+        <div class="alert alert-danger">
+          Error: @registrationForm.errors.toString
+        </div>
+      }
+
       <div>
         <form role="form"
               action="/register"
@@ -14,11 +21,12 @@
 
           <div class="form-group">
             <label for="email">
-              User ID
+              Email
             </label>
             <input class="form-control"
-                   id="userid"
-                   placeholder="Choose a User Id">
+                   id="email"
+                   name="email"
+                   placeholder="Email">
           </div>
 
           <div class="form-group">
@@ -28,6 +36,7 @@
             <input type="password"
                    class="form-control"
                    id="password1"
+                   name="password1"
                    placeholder="Password">
           </div>
 
@@ -38,6 +47,7 @@
             <input type="password"
                    class="form-control"
                    id="password2"
+                   name="password2"
                    placeholder="Repeat Password">
           </div>
 
