@@ -9,11 +9,11 @@ import models.user._
 
 object Application extends Controller {
 
-  def index = Action {
+  def index = Action { implicit request =>
     Ok(views.html.index("Welcome to dexlink!"))
   }
 
-  def aboutPage = Action {
+  def aboutPage = Action { implicit request =>
     Ok(views.html.about())
   }
 
@@ -25,7 +25,7 @@ object Application extends Controller {
     )(RegistrationData.apply)(RegistrationData.unapply)
   )
 
-  def register = Action {
+  def register = Action { implicit request =>
     Ok(views.html.register(registrationForm))
   }
 
@@ -37,8 +37,17 @@ object Application extends Controller {
         Logger.info("Registration Errors")
         Ok(views.html.register(formWithErrors))
       },
-      registrationData => {
-        Redirect("/")
+      formData => {
+        if (formData.password1 == formData.password2) {
+          UserAccountService.create(formData.email, formData.password1)
+          Redirect("/").flashing(
+            "success" -> "Account Created"
+          )
+        } else {
+          Ok(views.html.register(registrationForm)).flashing(
+            "error" -> "Passwords do not match"
+          )
+        }
       }
     )
   }

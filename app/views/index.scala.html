@@ -1,6 +1,6 @@
-@(message: String)
+@(message: String)(implicit flash: Flash)
 
-@main("Welcome to dexlink") {
+@main("Welcome to dexlink", flash) {
 
   <div class="row">
     <div class="jumbotron">

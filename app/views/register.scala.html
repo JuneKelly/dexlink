@@ -1,6 +1,6 @@
-@(registrationForm: Form[RegistrationData])
+@(registrationForm: Form[RegistrationData])(implicit flash: Flash)
 
-@main("Register") {
+@main("Register", flash) {
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div>

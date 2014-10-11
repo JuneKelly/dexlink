@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, flash: Flash)(content: Html)
 
 <!DOCTYPE html>
 
@@ -80,7 +80,20 @@
 
       <!-- Main Content -->
       <div id="content" class="container" role="main">
+        <!-- Flash messages -->
+        @flash.get("error") match {
+          case Some(message) => {
+            <div class="row">
+              <div class="alert alert warning">
+                @message
+              </div>
+            </div>
+          }
+          case None => {}
+        }
+
         @content
+
       </div><!-- /Main Content -->
     </body>
 </html>
