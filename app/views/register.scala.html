@@ -3,11 +3,13 @@
 @main("Register", flash) {
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <div>
+
+      <div class="row">
         <h1>Register</h1>
         <hr />
       </div>
 
+      <div class="row">
       @if(registrationForm.hasGlobalErrors) {
         <div class="alert alert-danger">
           Error:
@@ -18,8 +20,9 @@
           </ul>
         </div>
       }
+      </div>
 
-      <div>
+      <div class="row">
         <form role="form"
               action="/register"
               method="post">

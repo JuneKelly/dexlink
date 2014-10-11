@@ -30,7 +30,7 @@ object Application extends Controller {
   }
 
   def registerPost = Action { implicit request =>
-    Logger.info("registration form submitted")
+    Logger.info("Registration form submitted")
 
     registrationForm.bindFromRequest.fold(
       formWithErrors => {
