@@ -44,8 +44,9 @@ object Application extends Controller {
             "success" -> "Account Created"
           )
         } else {
-          Ok(views.html.register(registrationForm)).flashing(
-            "error" -> "Passwords do not match"
+          Logger.info("password missmatch")
+          Ok(views.html.register(
+            registrationForm.withGlobalError("Passwords do not match"))
           )
         }
       }

@@ -8,9 +8,14 @@
         <hr />
       </div>
 
-      @if(!registrationForm.errors.isEmpty) {
+      @if(registrationForm.hasGlobalErrors) {
         <div class="alert alert-danger">
-          Error: @registrationForm.errors.toString
+          Error:
+          <ul class="">
+          @for(error <- registrationForm.globalErrors) {
+            <li>@error.message</li>
+          }
+          </ul>
         </div>
       }
 
@@ -26,7 +31,18 @@
             <input class="form-control"
                    id="email"
                    name="email"
-                   placeholder="Email">
+                   placeholder="Email"
+                   value='@registrationForm.data.getOrElse("email", "")'>
+            @registrationForm.error("password1") match {
+              case Some(error) => {
+                <div class="alert alert-danger">
+                  @if(error.message == "error.minLength") {
+                    Email is too short
+                  }
+                </div>
+              }
+              case None => {}
+            }
           </div>
 
           <div class="form-group">
@@ -37,7 +53,18 @@
                    class="form-control"
                    id="password1"
                    name="password1"
-                   placeholder="Password">
+                   placeholder="Password"
+                   value='@registrationForm.data.getOrElse("password1", "")'>
+            @registrationForm.error("password1") match {
+              case Some(error) => {
+                <div class="alert alert-danger">
+                  @if(error.message == "error.minLength") {
+                    Password is too short
+                  }
+                </div>
+              }
+              case None => {}
+            }
           </div>
 
           <div class="form-group">
@@ -48,7 +75,18 @@
                    class="form-control"
                    id="password2"
                    name="password2"
-                   placeholder="Repeat Password">
+                   placeholder="Repeat Password"
+                   value='@registrationForm.data.getOrElse("password2", "")'>
+            @registrationForm.error("password2") match {
+              case Some(error) => {
+                <div class="alert alert-danger">
+                  @if(error.message == "error.minLength") {
+                    Password is too short
+                  }
+                </div>
+              }
+              case None => {}
+            }
           </div>
 
           <button type="submit" class="btn btn-primary">
