@@ -84,7 +84,7 @@
         @flash.get("error") match {
           case Some(message) => {
             <div class="row">
-              <div class="alert alert-warning">
+              <div id="flash-warning" class="alert alert-warning">
                 @message
               </div>
             </div>
@@ -94,7 +94,7 @@
         @flash.get("success") match {
           case Some(message) => {
             <div class="row">
-              <div class="alert alert-success">
+              <div id="flash-success" class="alert alert-success">
                 @message
               </div>
             </div>
