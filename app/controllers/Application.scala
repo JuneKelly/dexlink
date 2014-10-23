@@ -22,7 +22,15 @@ object Application extends Controller {
       "email" -> nonEmptyText(minLength = 2, maxLength = 64),
       "password1" -> nonEmptyText(minLength = 8),
       "password2" -> nonEmptyText(minLength = 8)
-    )(RegistrationData.apply)(RegistrationData.unapply)
+    )(RegistrationData.apply)(RegistrationData.unapply
+    ) verifying ("Passwords do not match", fields =>
+      fields match {
+        case userData => validateForm(
+          userData.password1,
+          userData.password2
+        )
+      }
+    )
   )
 
   def register = Action { implicit request =>
@@ -38,20 +46,18 @@ object Application extends Controller {
         Ok(views.html.register(formWithErrors))
       },
       formData => {
-        if (formData.password1 == formData.password2) {
-          UserAccountService.create(formData.email, formData.password1)
-          Redirect("/").flashing(
-            "success" -> "Account Created"
-          )
-        } else {
-          Logger.info("password missmatch")
-          Ok(views.html.register(
-            registrationForm.withGlobalError("Passwords do not match"))
-          )
-        }
+        UserAccountService.create(formData.email, formData.password1)
+        Redirect("/").flashing(
+          "success" -> "Account Created"
+        )
       }
     )
   }
+
+  def validateForm(pass1: String, pass2: String): Boolean = {
+    return pass1 != pass2
+  }
+
 }
 
 case class RegistrationData(
