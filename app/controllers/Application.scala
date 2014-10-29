@@ -17,33 +17,14 @@ object Application extends Controller {
     Ok(views.html.about())
   }
 
-  val registrationForm = Form(
-    mapping(
-      "email" -> nonEmptyText(minLength = 2, maxLength = 64),
-      "password1" -> nonEmptyText(minLength = 8),
-      "password2" -> nonEmptyText(minLength = 8))
-      (RegistrationData.apply)
-      (RegistrationData.unapply)
-      .verifying(
-        "Passwords do not match",
-        fields =>
-        fields match {
-          case userData => Validation.validateForm(
-            userData.password1,
-            userData.password2
-          )
-        }
-      )
-  )
-
   def register = Action { implicit request =>
-    Ok(views.html.register(registrationForm))
+    Ok(views.html.register(RegistrationForm.form))
   }
 
   def registerPost = Action { implicit request =>
     Logger.info("Registration form submitted")
 
-    registrationForm.bindFromRequest.fold(
+    RegistrationForm.form.bindFromRequest.fold(
       formWithErrors => {
         Logger.info("Registration Errors")
         Ok(views.html.register(formWithErrors))
@@ -65,9 +46,28 @@ case class RegistrationData(
   password2: String
 )
 
-object Validation {
+object RegistrationForm {
 
-  def validateForm(pass1: String, pass2: String): Boolean = {
+  val form = Form(
+    mapping(
+      "email" -> nonEmptyText(minLength = 2, maxLength = 64),
+      "password1" -> nonEmptyText(minLength = 8),
+      "password2" -> nonEmptyText(minLength = 8))
+      (RegistrationData.apply)
+      (RegistrationData.unapply)
+      .verifying(
+        "Passwords do not match",
+        fields =>
+        fields match {
+          case userData => RegistrationForm.validatePasswords(
+            userData.password1,
+            userData.password2
+          )
+        }
+      )
+  )
+
+  def validatePasswords(pass1: String, pass2: String): Boolean = {
     return pass1 == pass2
   }
 
