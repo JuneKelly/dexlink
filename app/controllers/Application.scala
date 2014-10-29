@@ -30,6 +30,7 @@ object Application extends Controller {
         Ok(views.html.register(formWithErrors))
       },
       formData => {
+        Logger.info(s"Creating user account $formData.email")
         UserAccountService.create(formData.email, formData.password1)
         Redirect("/").flashing(
           "success" -> "Account Created"
@@ -40,21 +41,21 @@ object Application extends Controller {
 
 }
 
-case class RegistrationData(
-  email: String,
-  password1: String,
-  password2: String
-)
-
 object RegistrationForm {
+
+  case class Data(
+    email: String,
+    password1: String,
+    password2: String
+  )
 
   val form = Form(
     mapping(
       "email" -> nonEmptyText(minLength = 2, maxLength = 64),
       "password1" -> nonEmptyText(minLength = 8),
       "password2" -> nonEmptyText(minLength = 8))
-      (RegistrationData.apply)
-      (RegistrationData.unapply)
+      (RegistrationForm.Data.apply)
+      (RegistrationForm.Data.unapply)
       .verifying(
         "Passwords do not match",
         fields =>
