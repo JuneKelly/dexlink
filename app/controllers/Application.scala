@@ -28,7 +28,7 @@ object Application extends Controller {
         "Passwords do not match",
         fields =>
         fields match {
-          case userData => validateForm(
+          case userData => Validation.validateForm(
             userData.password1,
             userData.password2
           )
@@ -57,10 +57,6 @@ object Application extends Controller {
     )
   }
 
-  def validateForm(pass1: String, pass2: String): Boolean = {
-    return pass1 == pass2
-  }
-
 }
 
 case class RegistrationData(
@@ -68,3 +64,11 @@ case class RegistrationData(
   password1: String,
   password2: String
 )
+
+object Validation {
+
+  def validateForm(pass1: String, pass2: String): Boolean = {
+    return pass1 == pass2
+  }
+
+}
