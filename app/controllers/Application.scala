@@ -21,16 +21,19 @@ object Application extends Controller {
     mapping(
       "email" -> nonEmptyText(minLength = 2, maxLength = 64),
       "password1" -> nonEmptyText(minLength = 8),
-      "password2" -> nonEmptyText(minLength = 8)
-    )(RegistrationData.apply)(RegistrationData.unapply
-    ) verifying ("Passwords do not match", fields =>
-      fields match {
-        case userData => validateForm(
-          userData.password1,
-          userData.password2
-        )
-      }
-    )
+      "password2" -> nonEmptyText(minLength = 8))
+      (RegistrationData.apply)
+      (RegistrationData.unapply)
+      .verifying(
+        "Passwords do not match",
+        fields =>
+        fields match {
+          case userData => validateForm(
+            userData.password1,
+            userData.password2
+          )
+        }
+      )
   )
 
   def register = Action { implicit request =>
@@ -55,7 +58,7 @@ object Application extends Controller {
   }
 
   def validateForm(pass1: String, pass2: String): Boolean = {
-    return pass1 != pass2
+    return pass1 == pass2
   }
 
 }
