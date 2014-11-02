@@ -3,7 +3,7 @@ package helpers
 import play.api.data.FormError
 import play.api.i18n.Messages
 
-object ViewHelpers {
+object FormHelpers {
 
   type Errors = Seq[FormError]
   type FieldName = Option[String]

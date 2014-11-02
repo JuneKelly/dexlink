@@ -1,5 +1,5 @@
 @(form: Form[RegistrationForm.Data])(implicit flash: Flash)
-@import helpers.ViewHelpers
+@import helpers.FormHelpers
 @main("Register", flash) {
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -39,7 +39,9 @@
                      value="@email.value">
               @if(email.hasErrors) {
                 <div class="alert alert-danger">
-                  @ViewHelpers.prettyErrors(email.errors)
+                  @for(e <- @FormHelpers.prettyErrors(email.errors)) {
+                    <div>@e</div>
+                  }
                 </div>
               }
             </div>
@@ -58,7 +60,7 @@
                      value="@password1.value">
               @if(password1.hasErrors) {
                 <div class="alert alert-danger">
-                  @for(e <- ViewHelpers.prettyErrors(password1.errors,
+                  @for(e <- FormHelpers.prettyErrors(password1.errors,
                                                      Some("Password"))) {
                     <div>@e</div>
                   }
@@ -80,7 +82,7 @@
                      value="@password2.value">
               @if(password2.hasErrors) {
                 <div class="alert alert-danger">
-                  @for(e <- ViewHelpers.prettyErrors(password2.errors,
+                  @for(e <- FormHelpers.prettyErrors(password2.errors,
                                                     Some("Password"))) {
                     <div>@e</div>
                   }
