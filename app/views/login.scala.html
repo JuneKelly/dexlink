@@ -16,53 +16,46 @@
               method="post">
 
 
-          <div class="form-group">
-            <label for="email">
-              Email
-            </label>
-            <input class="form-control"
-                   id="email"
-                   name="email"
-                   placeholder="Email"
-                   value='@loginForm.data.getOrElse("email", "")'>
-            @loginForm.error("password1") match {
-              case Some(error) => {
+          @defining(loginForm("email")) { email =>
+            <div class="form-group">
+              <label for="email">
+                Email
+              </label>
+              <input class="form-control"
+                     id="email"
+                     name="email"
+                     placeholder="Email"
+                     value="@email.value">
+              @if(email.hasErrors) {
                 <div class="alert alert-danger">
-                  @if(error.message == "error.minLength") {
-                    Email is too short
-                  }
+                  email.errors.mkString(", ")
                 </div>
               }
-              case None => {}
-            }
-          </div>
+            </div>
+          }
 
-          <div class="form-group">
-            <label for="password">
-              Password
-            </label>
-            <input type="password"
-                   class="form-control"
-                   id="password"
-                   name="password"
-                   placeholder="Password"
-                   value='@loginForm.data.getOrElse("password", "")'>
-            @loginForm.error("password") match {
-              case Some(error) => {
+          @defining(loginForm("password")) { password =>
+            <div class="form-group">
+              <label for="password">
+                Password
+              </label>
+              <input class="form-control"
+                     type="password"
+                     id="password"
+                     name="password"
+                     placeholder="Password"
+                     value="@password.value">
+              @if(password.hasErrors) {
                 <div class="alert alert-danger">
-                  @if(error.message == "error.minLength") {
-                    Password is too short
-                  }
+                  password.errors.mkString(", ")
                 </div>
               }
-              case None => {}
-            }
-          </div>
+            </div>
+          }
 
           <button type="submit" class="btn btn-primary">
             Submit
           </button>
-
 
         </form>
       </div>

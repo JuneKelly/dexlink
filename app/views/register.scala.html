@@ -1,5 +1,5 @@
 @(registrationForm: Form[RegistrationForm.Data])(implicit flash: Flash)
-
+@import helpers.ViewHelpers
 @main("Register", flash) {
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -27,70 +27,65 @@
               action="@routes.Application.registerPost"
               method="post">
 
-          <div class="form-group">
-            <label for="email">
-              Email
-            </label>
-            <input class="form-control"
-                   id="email"
-                   name="email"
-                   placeholder="Email"
-                   value='@registrationForm.data.getOrElse("email", "")'>
-            @registrationForm.error("password1") match {
-              case Some(error) => {
+          @defining(registrationForm("email")) { email =>
+            <div class="form-group">
+              <label for="email">
+                Email
+              </label>
+              <input class="form-control"
+                     id="email"
+                     name="email"
+                     placeholder="Email"
+                     value="@email.value">
+              @if(email.hasErrors) {
                 <div class="alert alert-danger">
-                  @if(error.message == "error.minLength") {
-                    Email is too short
-                  }
+                  @ViewHelpers.prettyErrors(email.errors)
                 </div>
               }
-              case None => {}
-            }
-          </div>
+            </div>
+          }
 
-          <div class="form-group">
-            <label for="password1">
-              Password
-            </label>
-            <input type="password"
-                   class="form-control"
-                   id="password1"
-                   name="password1"
-                   placeholder="Password"
-                   value='@registrationForm.data.getOrElse("password1", "")'>
-            @registrationForm.error("password1") match {
-              case Some(error) => {
+          @defining(registrationForm("password1")) { password1 =>
+            <div class="form-group">
+              <label for="password1">
+                Password
+              </label>
+              <input class="form-control"
+                     type="password"
+                     id="password1"
+                     name="password1"
+                     placeholder="Password"
+                     value="@password1.value">
+              @if(password1.hasErrors) {
                 <div class="alert alert-danger">
-                  @if(error.message == "error.minLength") {
-                    Password is too short
+                  @for(e <- ViewHelpers.prettyErrors(password1.errors)) {
+                    <div>@e</div>
                   }
                 </div>
               }
-              case None => {}
-            }
-          </div>
+            </div>
+          }
 
-          <div class="form-group">
-            <label for="password2">
-              Repeat Password
-            </label>
-            <input type="password"
-                   class="form-control"
-                   id="password2"
-                   name="password2"
-                   placeholder="Repeat Password"
-                   value='@registrationForm.data.getOrElse("password2", "")'>
-            @registrationForm.error("password2") match {
-              case Some(error) => {
+          @defining(registrationForm("password2")) { password2 =>
+            <div class="form-group">
+              <label for="password2">
+                Repeat Password
+              </label>
+              <input class="form-control"
+                     type="password"
+                     id="password2"
+                     name="password2"
+                     placeholder="Password"
+                     value="@password2.value">
+              @if(password2.hasErrors) {
                 <div class="alert alert-danger">
-                  @if(error.message == "error.minLength") {
-                    Password is too short
+                  @for(e <- ViewHelpers.prettyErrors(password2.errors)) {
+                    <div>@e</div>
                   }
                 </div>
               }
-              case None => {}
-            }
-          </div>
+            </div>
+          }
 
           <button type="submit" class="btn btn-primary">
             Submit
