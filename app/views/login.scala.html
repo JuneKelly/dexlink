@@ -1,0 +1,72 @@
+@(loginForm: Form[LoginForm.Data])(implicit flash: Flash)
+@main("Login", flash) {
+  <div class="row">
+
+    <div class="col-md-8 col-md-offset-2">
+
+      <div class="row">
+        <h1>Login</h1>
+        <hr />
+      </div>
+
+      <div class="row">
+        <form role="form"
+              id="login-form"
+              action="@routes.Application.loginPost"
+              method="post">
+
+
+          <div class="form-group">
+            <label for="email">
+              Email
+            </label>
+            <input class="form-control"
+                   id="email"
+                   name="email"
+                   placeholder="Email"
+                   value='@loginForm.data.getOrElse("email", "")'>
+            @loginForm.error("password1") match {
+              case Some(error) => {
+                <div class="alert alert-danger">
+                  @if(error.message == "error.minLength") {
+                    Email is too short
+                  }
+                </div>
+              }
+              case None => {}
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              Password
+            </label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="Password"
+                   value='@loginForm.data.getOrElse("password", "")'>
+            @loginForm.error("password") match {
+              case Some(error) => {
+                <div class="alert alert-danger">
+                  @if(error.message == "error.minLength") {
+                    Password is too short
+                  }
+                </div>
+              }
+              case None => {}
+            }
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Submit
+          </button>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+}

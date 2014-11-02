@@ -40,6 +40,31 @@ object Application extends Controller {
     )
   }
 
+  def login = Action { implicit request =>
+    Ok(views.html.login(LoginForm.form))
+  }
+
+  def loginPost = Action { implicit request =>
+    Ok(views.html.login(LoginForm.form))
+  }
+
+}
+
+object LoginForm {
+
+  case class Data(
+    email: String,
+    password: String
+  )
+
+  val form = Form(
+    mapping(
+      "email" -> nonEmptyText(minLength = 2, maxLength = 128),
+      "password" -> nonEmptyText(minLength = 8))
+      (LoginForm.Data.apply)
+      (LoginForm.Data.unapply)
+  )
+
 }
 
 object RegistrationForm {
@@ -52,7 +77,7 @@ object RegistrationForm {
 
   val form = Form(
     mapping(
-      "email" -> nonEmptyText(minLength = 2, maxLength = 64),
+      "email" -> nonEmptyText(minLength = 2, maxLength = 128),
       "password1" -> nonEmptyText(minLength = 8),
       "password2" -> nonEmptyText(minLength = 8))
       (RegistrationForm.Data.apply)
