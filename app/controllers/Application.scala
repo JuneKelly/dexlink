@@ -30,9 +30,10 @@ object Application extends Controller {
         Ok(views.html.register(formWithErrors))
       },
       formData => {
-        Logger.info(s"Creating user account $formData.email")
+        val userName = formData.email
+        Logger.info(s"Creating user account $userName")
         UserAccountService.create(formData.email, formData.password1)
-        Redirect("/").flashing(
+        Redirect(routes.Application.index).flashing(
           "success" -> "Account Created"
         )
       }
