@@ -1,4 +1,4 @@
-@(registrationForm: Form[RegistrationForm.Data])(implicit flash: Flash)
+@(form: Form[RegistrationForm.Data])(implicit flash: Flash)
 @import helpers.ViewHelpers
 @main("Register", flash) {
   <div class="row">
@@ -10,11 +10,11 @@
       </div>
 
       <div class="row">
-      @if(registrationForm.hasGlobalErrors) {
+      @if(form.hasGlobalErrors) {
         <div class="alert alert-danger">
           Error:
           <ul class="">
-          @for(error <- registrationForm.globalErrors) {
+          @for(error <- form.globalErrors) {
             <li>@error.message</li>
           }
           </ul>
@@ -27,7 +27,7 @@
               action="@routes.Application.registerPost"
               method="post">
 
-          @defining(registrationForm("email")) { email =>
+          @defining(form("email")) { email =>
             <div class="form-group">
               <label for="email">
                 Email
@@ -45,7 +45,7 @@
             </div>
           }
 
-          @defining(registrationForm("password1")) { password1 =>
+          @defining(form("password1")) { password1 =>
             <div class="form-group">
               <label for="password1">
                 Password
@@ -58,7 +58,8 @@
                      value="@password1.value">
               @if(password1.hasErrors) {
                 <div class="alert alert-danger">
-                  @for(e <- ViewHelpers.prettyErrors(password1.errors)) {
+                  @for(e <- ViewHelpers.prettyErrors(password1.errors,
+                                                     Some("Password"))) {
                     <div>@e</div>
                   }
                 </div>
@@ -66,7 +67,7 @@
             </div>
           }
 
-          @defining(registrationForm("password2")) { password2 =>
+          @defining(form("password2")) { password2 =>
             <div class="form-group">
               <label for="password2">
                 Repeat Password
@@ -79,7 +80,8 @@
                      value="@password2.value">
               @if(password2.hasErrors) {
                 <div class="alert alert-danger">
-                  @for(e <- ViewHelpers.prettyErrors(password2.errors)) {
+                  @for(e <- ViewHelpers.prettyErrors(password2.errors,
+                                                    Some("Password"))) {
                     <div>@e</div>
                   }
                 </div>

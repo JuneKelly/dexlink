@@ -5,17 +5,25 @@ import play.api.i18n.Messages
 
 object ViewHelpers {
 
-  def prettyFormError(error: FormError): String = {
-    val field = error.key.capitalize
-    val args = error.args.headOption
-    val errorKey = error.message
-    val message = Messages(errorKey, args.map(_.toString).getOrElse(""))
+  type Errors = Seq[FormError]
+  type FieldName = Option[String]
 
-    s"$field $message"
-  }
+  def prettyErrors(
+    errors: Errors, fieldName: FieldName= None): Seq[String] = {
 
-  def prettyErrors(errors: Seq[FormError]): Seq[String] = {
-    errors.map(x => prettyFormError(x))
+    def prettyFormError(error: FormError): String = {
+      val field = fieldName match {
+        case Some(name) => name;
+        case None => error.key.capitalize
+      }
+      val args = error.args.headOption
+      val errorKey = error.message
+      val message = Messages(errorKey, args.map(_.toString).getOrElse(""))
+
+      s"$field $message"
+    }
+
+    return errors.map(x => prettyFormError(x))
   }
 
 }
