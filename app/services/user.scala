@@ -8,6 +8,8 @@ import com.github.t3hnar.bcrypt._
 
 object UserAccountService extends UserAccountStorage {
 
+  type UserID = String
+
   def get(id: String): Option[UserAccount] = {
     val result = backend.get(id)
     result match {
@@ -28,6 +30,18 @@ object UserAccountService extends UserAccountStorage {
       Some(user)
     } else {
       None
+    }
+  }
+
+  def validateCredentials(id: UserID, pass: String): Option[UserID] = {
+    get(id) match {
+      case None => None;
+      case Some(account) =>
+        if (account.pass == pass.bcrypt) {
+          Some(account.id)
+        } else {
+          None
+        }
     }
   }
 }
