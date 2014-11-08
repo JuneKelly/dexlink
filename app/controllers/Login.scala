@@ -14,6 +14,18 @@ object Login extends Controller {
   }
 
   def loginPost = Action { implicit request =>
+    LoginForm.form.bindFromRequest.fold(
+      formWithErrors => {
+        Ok(views.html.login(formWithErrors))
+      },
+      formData => {
+        val userName = formData.email
+        val password = formData.password
+        // TODO: do login
+        Ok(views.html.login(LoginForm.form))
+      }
+    )
+
     Ok(views.html.login(LoginForm.form))
   }
 
