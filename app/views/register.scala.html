@@ -24,7 +24,7 @@
 
       <div class="row">
         <form role="form"
-              action="@routes.Application.registerPost"
+              action="@routes.Registration.registerPost"
               method="post">
 
           @defining(form("email")) { email =>
@@ -39,7 +39,7 @@
                      value="@email.value">
               @if(email.hasErrors) {
                 <div class="alert alert-danger">
-                  @for(e <- @FormHelpers.prettyErrors(email.errors)) {
+                  @for(e <- FormHelpers.prettyErrors(email.errors)) {
                     <div>@e</div>
                   }
                 </div>
