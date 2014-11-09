@@ -1,6 +1,6 @@
-@(message: String)(implicit flash: Flash)
+@(context: helpers.ViewContext, message: String)(implicit flash: Flash)
 
-@main("Welcome to dexlink", flash) {
+@main(context, "Welcome to dexlink", flash) {
 
   <div class="row">
     <div class="jumbotron">

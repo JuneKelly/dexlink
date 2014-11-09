@@ -1,5 +1,5 @@
-@(loginForm: Form[LoginForm.Data])(implicit flash: Flash)
-@main("Login", flash) {
+@(context: helpers.ViewContext, loginForm: Form[LoginForm.Data])(implicit flash: Flash)
+@main(context, "Login", flash) {
   <div class="row">
 
     <div class="col-md-8 col-md-offset-2">

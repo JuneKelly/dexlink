@@ -6,26 +6,29 @@ import play.api.data._
 import play.api.data.Forms._
 import services.user._
 import models.user._
+import helpers.ViewContext
 
 object Login extends Controller {
 
   def login = Action { implicit request =>
-    Ok(views.html.login(LoginForm.form))
+    Ok(views.html.login(ViewContext(), LoginForm.form))
   }
 
   def loginPost = Action { implicit request =>
     LoginForm.form.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.login(formWithErrors))
+        Ok(views.html.login(ViewContext(), formWithErrors))
       },
       formData => {
         val userName = formData.email
         val password = formData.password
         UserAccountService.validateCredentials(userName, password) match {
           case Some(userID) =>
-            Redirect(routes.Application.index).flashing("success" -> s"Logged in ${userID}")
+            Redirect(routes.Application.index)
+              .flashing("success" -> s"Logged in ${userID}")
+              .withSession("user" -> userID)
           case None =>
-            Ok(views.html.login(LoginForm.form.withGlobalError("Login failed")))
+            Ok(views.html.login(ViewContext(), LoginForm.form.withGlobalError("Login failed")))
         }
       }
     )

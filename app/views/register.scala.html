@@ -1,6 +1,6 @@
-@(form: Form[RegistrationForm.Data])(implicit flash: Flash)
+@(context: helpers.ViewContext, form: Form[RegistrationForm.Data])(implicit flash: Flash)
 @import helpers.FormHelpers
-@main("Register", flash) {
+@main(context, "Register", flash) {
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
 

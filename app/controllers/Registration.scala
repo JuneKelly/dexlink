@@ -6,11 +6,12 @@ import play.api.data._
 import play.api.data.Forms._
 import services.user._
 import models.user._
+import helpers.ViewContext
 
 object Registration extends Controller {
 
   def register = Action { implicit request =>
-    Ok(views.html.register(RegistrationForm.form))
+    Ok(views.html.register(ViewContext(), RegistrationForm.form))
   }
 
   def registerPost = Action { implicit request =>
@@ -19,7 +20,7 @@ object Registration extends Controller {
     RegistrationForm.form.bindFromRequest.fold(
       formWithErrors => {
         Logger.info("Registration Errors")
-        Ok(views.html.register(formWithErrors))
+        Ok(views.html.register(ViewContext(), formWithErrors))
       },
       formData => {
         val userName = formData.email

@@ -2,6 +2,7 @@ package helpers
 
 import play.api.data.FormError
 import play.api.i18n.Messages
+import play.api.mvc.Request
 
 object FormHelpers {
 
@@ -26,4 +27,22 @@ object FormHelpers {
     return errors.map(x => prettyFormError(x))
   }
 
+}
+
+
+object SessionHelpers {
+
+  def currentUser(implicit request: Request[_]): Option[String] = {
+    request.session.get("user")
+  }
+
+  def userIsLoggedIn(implicit request: Request[_], user: String) = {
+    currentUser(request) == user
+  }
+
+
+}
+
+case class ViewContext(implicit request: Request[_]) {
+  val currentUser = SessionHelpers.currentUser(request)
 }
