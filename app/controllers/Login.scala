@@ -34,6 +34,9 @@ object Login extends Controller {
     )
   }
 
+  def logout = Action { implicit request =>
+    Redirect(routes.Application.index).flashing("success" -> "Logged out").withNewSession
+  }
 }
 
 object LoginForm {
