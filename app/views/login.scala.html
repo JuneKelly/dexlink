@@ -10,6 +10,19 @@
       </div>
 
       <div class="row">
+      @if(loginForm.hasGlobalErrors) {
+        <div class="alert alert-danger">
+          Error:
+          <ul class="">
+          @for(error <- loginForm.globalErrors) {
+            <li>@error.message</li>
+          }
+          </ul>
+        </div>
+      }
+      </div>
+
+      <div class="row">
         <form role="form"
               id="login-form"
               action="@routes.Login.loginPost"

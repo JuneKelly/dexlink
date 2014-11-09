@@ -37,7 +37,7 @@ object UserAccountService extends UserAccountStorage {
     get(id) match {
       case None => None;
       case Some(account) =>
-        if (account.pass == pass.bcrypt) {
+        if (pass.isBcrypted(account.pass)) {
           Some(account.id)
         } else {
           None

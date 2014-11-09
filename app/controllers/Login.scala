@@ -21,12 +21,14 @@ object Login extends Controller {
       formData => {
         val userName = formData.email
         val password = formData.password
-        // TODO: do login
-        Ok(views.html.login(LoginForm.form))
+        UserAccountService.validateCredentials(userName, password) match {
+          case Some(userID) =>
+            Redirect(routes.Application.index).flashing("success" -> s"Logged in ${userID}")
+          case None =>
+            Ok(views.html.login(LoginForm.form.withGlobalError("Login failed")))
+        }
       }
     )
-
-    Ok(views.html.login(LoginForm.form))
   }
 
 }
