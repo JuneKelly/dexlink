@@ -1,4 +1,5 @@
 @(context: helpers.ViewContext, loginForm: Form[LoginForm.Data])
+@import helper.CSRF
 @main(context, "Login") {
   <div class="row">
 
@@ -64,6 +65,10 @@
                 </div>
               }
             </div>
+          }
+
+          @defining(context.csrfToken) { implicit token =>
+            @CSRF.formField
           }
 
           <button type="submit" class="btn btn-primary">

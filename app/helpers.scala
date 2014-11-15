@@ -3,6 +3,7 @@ package helpers
 import play.api.data.FormError
 import play.api.i18n.Messages
 import play.api.mvc.Request
+import play.filters.csrf.CSRF
 
 object FormHelpers {
 
@@ -29,7 +30,6 @@ object FormHelpers {
 
 }
 
-
 object SessionHelpers {
 
   def currentUser(implicit request: Request[_]): Option[String] = {
@@ -40,10 +40,10 @@ object SessionHelpers {
     currentUser(request) == user
   }
 
-
 }
 
 case class ViewContext(implicit request: Request[_]) {
   val currentUser = SessionHelpers.currentUser(request)
   val flash = request.flash
+  val csrfToken = CSRF.getToken(request).getOrElse(CSRF.Token(""))
 }
