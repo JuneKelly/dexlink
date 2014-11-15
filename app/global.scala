@@ -1,9 +1,10 @@
 import play.api._
 import play.api.mvc._
+import play.filters.csrf._
 import services.user.UserAccountService
 
 
-object Global extends GlobalSettings {
+object Global extends WithFilters(CSRFFilter()) with GlobalSettings {
 
   override def onStart(app: Application) {
     Lifecycle.seedUserAccounts()

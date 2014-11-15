@@ -45,4 +45,5 @@ object SessionHelpers {
 
 case class ViewContext(implicit request: Request[_]) {
   val currentUser = SessionHelpers.currentUser(request)
+  val flash = request.flash
 }

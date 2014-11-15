@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   ws,
+  filters,
   "org.mongodb" %% "casbah" % "2.7.2",
   "com.github.nscala-time" %% "nscala-time" % "1.4.0",
   "com.github.t3hnar" %% "scala-bcrypt" % "2.4"

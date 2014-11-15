@@ -1,4 +1,4 @@
-@(context: helpers.ViewContext, title: String, flash: Flash)(content: Html)
+@(context: helpers.ViewContext, title: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -89,7 +89,7 @@
       <!-- Main Content -->
       <div id="content" class="container" role="main">
         <!-- Flash messages -->
-        @flash.get("error") match {
+        @context.flash.get("error") match {
           case Some(message) => {
             <div class="row">
               <div id="flash-error"
@@ -108,7 +108,7 @@
           }
           case None => {}
         }
-        @flash.get("success") match {
+        @context.flash.get("success") match {
           case Some(message) => {
             <div class="row">
               <div id="flash-success"
