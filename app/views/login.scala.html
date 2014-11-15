@@ -1,5 +1,6 @@
 @(context: helpers.ViewContext, loginForm: Form[LoginForm.Data])
 @import helper.CSRF
+@import helpers.FormHelpers
 @main(context, "Login") {
   <div class="row">
 
@@ -42,7 +43,9 @@
                      value="@email.value">
               @if(email.hasErrors) {
                 <div class="alert alert-danger">
-                  email.errors.mkString(", ")
+                  @for(e <- FormHelpers.prettyErrors(email.errors)) {
+                    <div>@e</div>
+                  }
                 </div>
               }
             </div>
@@ -61,8 +64,9 @@
                      value="@password.value">
               @if(password.hasErrors) {
                 <div class="alert alert-danger">
-                  password.errors.mkString(", ")
-                </div>
+                  @for(e <- FormHelpers.prettyErrors(password.errors)) {
+                    <div>@e</div>
+                  }
               }
             </div>
           }
