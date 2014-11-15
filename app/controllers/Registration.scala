@@ -11,24 +11,28 @@ import helpers.ViewContext
 object Registration extends Controller {
 
   def register = Action { implicit request =>
-    Ok(views.html.register(ViewContext(), RegistrationForm.form))
+    Ok(views.html.register(ViewContext(),
+       RegistrationForm.form))
   }
 
   def registerPost = Action { implicit request =>
     Logger.info("Registration form submitted")
 
     RegistrationForm.form.bindFromRequest.fold(
+
       formWithErrors => {
         Logger.info("Registration Errors")
         Ok(views.html.register(ViewContext(), formWithErrors))
       },
+
       formData => {
         val userName = formData.email
         Logger.info(s"Creating user account $userName")
+
         UserAccountService.create(formData.email, formData.password1)
-        Redirect(routes.Application.index).flashing(
-          "success" -> "Account Created"
-        )
+
+        Redirect(routes.Application.index)
+          .flashing("success" -> "Account Created")
       }
     )
   }
@@ -45,9 +49,13 @@ object RegistrationForm {
 
   val form = Form(
     mapping(
-      "email" -> nonEmptyText(minLength = 2, maxLength = 128),
-      "password1" -> nonEmptyText(minLength = 8),
-      "password2" -> nonEmptyText(minLength = 8))
+      "email" -> nonEmptyText(
+        minLength = 2,
+        maxLength = 128),
+      "password1" -> nonEmptyText(
+        minLength = 8),
+      "password2" -> nonEmptyText(
+        minLength = 8))
       (RegistrationForm.Data.apply)
       (RegistrationForm.Data.unapply)
       .verifying(
