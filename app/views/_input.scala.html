@@ -9,6 +9,7 @@
   <input class="form-control"
          id='@options.getOrElse("id", field.id)'
          name='@options.getOrElse("name", field.name)'
+         type='@options.getOrElse("type", "text")'
          placeholder='@options.getOrElse("placeholder", "")'
          value='@options.getOrElse("value", field.value)'>
   @if(field.hasErrors) {

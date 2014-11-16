@@ -35,25 +35,9 @@
           @_input(loginForm("email"),
                   Map("placeholder" -> "Email"))
 
-          @defining(loginForm("password")) { password =>
-            <div class="form-group">
-              <label for="password">
-                Password
-              </label>
-              <input class="form-control"
-                     type="password"
-                     id="password"
-                     name="password"
-                     placeholder="Password"
-                     value="@password.value">
-              @if(password.hasErrors) {
-                <div class="alert alert-danger">
-                  @for(e <- FormHelpers.prettyErrors(password.errors)) {
-                    <div>@e</div>
-                  }
-              }
-            </div>
-          }
+          @_input(loginForm("password"),
+                  Map("type" -> "password",
+                      "placeholder" -> "Password"))
 
           @defining(context.csrfToken) { implicit token =>
             @CSRF.formField
