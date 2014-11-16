@@ -32,26 +32,8 @@
               action="@routes.Login.loginPost"
               method="post">
 
-
-          @defining(loginForm("email")) { email =>
-            <div class="form-group">
-              <label for="email">
-                Email
-              </label>
-              <input class="form-control"
-                     id="email"
-                     name="email"
-                     placeholder="Email"
-                     value="@email.value">
-              @if(email.hasErrors) {
-                <div class="alert alert-danger">
-                  @for(e <- FormHelpers.prettyErrors(email.errors)) {
-                    <div>@e</div>
-                  }
-                </div>
-              }
-            </div>
-          }
+          @_input(loginForm("email"),
+                  Map("placeholder" -> "Email"))
 
           @defining(loginForm("password")) { password =>
             <div class="form-group">

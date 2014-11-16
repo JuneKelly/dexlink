@@ -1,0 +1,21 @@
+@(field: play.api.data.Field, options: Map[String, String]=Map())
+
+@import helpers.FormHelpers
+
+<div class="form-group">
+  <label for="@field.name">
+    @options.getOrElse("label", field.name.capitalize)
+  </label>
+  <input class="form-control"
+         id='@options.getOrElse("id", field.id)'
+         name='@options.getOrElse("name", field.name)'
+         placeholder='@options.getOrElse("placeholder", "")'
+         value='@options.getOrElse("value", field.value)'>
+  @if(field.hasErrors) {
+    <div class="alert alert-danger">
+      @for(error <- FormHelpers.prettyErrors(field.errors)) {
+        <div>@error</div>
+      }
+    </div>
+  }
+</div>
