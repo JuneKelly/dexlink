@@ -1,6 +1,6 @@
 @(context: helpers.ViewContext, form: Form[RegistrationForm.Data])
 
-@import helpers.FormHelpers
+@import helper.CSRF
 
 @main(context, "Register") {
   <div class="row">
@@ -29,68 +29,21 @@
               action="@routes.Registration.registerPost"
               method="post">
 
-          @defining(form("email")) { email =>
-            <div class="form-group">
-              <label for="email">
-                Email
-              </label>
-              <input class="form-control"
-                     id="email"
-                     name="email"
-                     placeholder="Email"
-                     value="@email.value">
-              @if(email.hasErrors) {
-                <div class="alert alert-danger">
-                  @for(e <- FormHelpers.prettyErrors(email.errors)) {
-                    <div>@e</div>
-                  }
-                </div>
-              }
-            </div>
-          }
+          @_input(form("email"),
+                  Map("placeholder" -> "Email"))
 
-          @defining(form("password1")) { password1 =>
-            <div class="form-group">
-              <label for="password1">
-                Password
-              </label>
-              <input class="form-control"
-                     type="password"
-                     id="password1"
-                     name="password1"
-                     placeholder="Password"
-                     value="@password1.value">
-              @if(password1.hasErrors) {
-                <div class="alert alert-danger">
-                  @for(e <- FormHelpers.prettyErrors(password1.errors,
-                                                     Some("Password"))) {
-                    <div>@e</div>
-                  }
-                </div>
-              }
-            </div>
-          }
+          @_input(form("password1"),
+                  Map("type" -> "password",
+                      "placeholder" -> "Password",
+                      "label" -> "Password"))
 
-          @defining(form("password2")) { password2 =>
-            <div class="form-group">
-              <label for="password2">
-                Repeat Password
-              </label>
-              <input class="form-control"
-                     type="password"
-                     id="password2"
-                     name="password2"
-                     placeholder="Password"
-                     value="@password2.value">
-              @if(password2.hasErrors) {
-                <div class="alert alert-danger">
-                  @for(e <- FormHelpers.prettyErrors(password2.errors,
-                                                    Some("Password"))) {
-                    <div>@e</div>
-                  }
-                </div>
-              }
-            </div>
+          @_input(form("password2"),
+                  Map("type" -> "password",
+                      "placeholder" -> "Repeat Password",
+                      "label" -> "Repeat Password"))
+
+          @defining(context.csrfToken) { implicit token =>
+            @CSRF.formField
           }
 
           <button type="submit" class="btn btn-primary">
