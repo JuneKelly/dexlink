@@ -10,22 +10,12 @@
       </div>
 
       <div class="row">
-      @if(form.hasGlobalErrors) {
-        <div class="alert alert-danger">
-          Error:
-          <ul class="">
-          @for(error <- form.globalErrors) {
-            <li>@error.message</li>
-          }
-          </ul>
-        </div>
-      }
-      </div>
-
-      <div class="row">
         <form role="form"
               action="@routes.Registration.registerPost"
               method="post">
+
+
+          @_formGlobalErrors(form)
 
           @_input(form("email"),
                   Map("placeholder" -> "Email"))
