@@ -1,7 +1,5 @@
 @(context: helpers.ViewContext, loginForm: Form[LoginForm.Data])
 
-@import helper.CSRF
-
 @main(context, "Login") {
   <div class="row">
 
@@ -38,9 +36,7 @@
                   Map("type" -> "password",
                       "placeholder" -> "Password"))
 
-          @defining(context.csrfToken) { implicit token =>
-            @CSRF.formField
-          }
+          @_csrfField(context)
 
           <button type="submit" class="btn btn-primary">
             Submit

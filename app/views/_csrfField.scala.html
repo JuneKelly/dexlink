@@ -1,0 +1,7 @@
+@(context: helpers.ViewContext)
+
+@import helper.CSRF
+
+@defining(context.csrfToken) { implicit token =>
+  @CSRF.formField
+}
