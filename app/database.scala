@@ -58,7 +58,7 @@ trait UserAccountStorage {
     def get(id: String): Option[UserAccount] = {
       val doc = DB.userAccountCollection.findOneByID(id)
       doc match {
-        case Some(user) => Some(documentToUserAccount(user))
+        case Some(user) => Some(fromDocument(user))
         case None => None
       }
     }
@@ -71,40 +71,33 @@ trait UserAccountStorage {
       if (exists(user.id)) {
         false
       } else {
-        val doc = userAccountToDocument(user)
+        val doc = toDocument(user)
         val result = DB.userAccountCollection.insert(doc)
         return result.getN == 1
       }
     }
   }
 
-  /** Convert MongoDB Document to a UserAccount,
-    * Raises an exception if the document is invalid
-    */
-  def documentToUserAccount(doc: MongoDBObject): UserAccount = {
+  def fromDocument(doc: MongoDBObject): UserAccount = {
     val userId = doc.as[String]("_id")
     val userPass = doc.as[String]("pass")
     val userCreated = doc.as[Option[LocalDateTime]]("created")
     val userUpdated = doc.as[Option[LocalDateTime]]("updated")
 
-    // SMELL
     if (userCreated.isEmpty || userUpdated.isEmpty) {
       throw new InvalidUserAccountException(
-        s"UserAccount $userId invalid"
+        s"UserAccount $userId invalid")
+    } else {
+      UserAccount(
+        id = userId,
+        pass = userPass,
+        created = userCreated.get.toDateTime,
+        updated = userUpdated.get.toDateTime
       )
     }
-
-    UserAccount(
-      id = userId,
-      pass = userPass,
-      created = userCreated.get.toDateTime,
-      updated = userUpdated.get.toDateTime
-    )
   }
 
-  /** Convert UserAccount model to MongoDB document
-    */
-  def userAccountToDocument(user: UserAccount): MongoDBObject = {
+  def toDocument(user: UserAccount): MongoDBObject = {
     MongoDBObject(
       "_id" -> user.id,
       "pass" -> user.pass,
