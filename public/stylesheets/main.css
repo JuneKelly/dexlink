@@ -1,3 +1,11 @@
+html {
+  background: url(../images/crossword.png) repeat;
+}
+
+body {
+  background: transparent;
+}
+
 #content {
   padding-top: 72px;
 }
